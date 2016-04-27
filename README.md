@@ -23,11 +23,11 @@ For each component in your Kicad schematic, find on a supplier's website (such a
 
     http://fr.farnell.com/multicomp/mc0603b104k250ct/condensateur-mlcc-x7r-100nf-25v/dp/1759037
 
-Supplier name and reference will be extracted from this URL (from known suppliers, feel free to add yours).
+Supplier name and reference will be extracted from this URL (for known suppliers, feel free to add yours).
 
 ## Manpage
 
-usage: kicad2bom.py [-h] [-u] [-a] [--cart] [-m MULTIPLIER] [-o OUTPUT] [-H]
+    usage: kicad2bom.py [-h] [-u] [-a] [--cart] [-m MULTIPLIER] [-o OUTPUT] [-H]
                         [-f FIELDS] [-s SORT] [-d {c,s,t}] [-t] [-N NAME] [-R REF]
                         [-V VALUE] [-F FOOTPRINT] [-S SUPPLIER] [-Z SUPPLIER_REF]
                         schematic [schematic ...]
