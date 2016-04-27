@@ -3,10 +3,12 @@
 ## Presentation
 
 This simple tool is able to 
+
 - read a set of Kicad projects and/or schematics
 - extract the list of components
 - apply usual select/sort/filter operations
 - output the result, either on the standard output or in a CSV file
+
 Its goal is to make generating components shopping cart as quick and easy as possible (when used with suppliers' CSV importation tools).
 
 ## Install
@@ -100,3 +102,6 @@ Create different CSV files for each supplier with quantities, ready to order to 
 
     kicad2bom kicadproject/ --cart -m 7
 
+## Contributing
+
+Feel free to add your own suppliers reference, fix bugs, improve features or correct my English mistakes, I'll gladly accept requests :)
