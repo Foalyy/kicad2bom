@@ -47,9 +47,11 @@ usage: kicad2bom.py [-h] [-u] [-a] [--cart] [-m MULTIPLIER] [-o OUTPUT] [-H]
                             order. -o is ignored, -s defaults to "ref,value" and
                             -f accepts the "qty" field and its default value is
                             "supplier_ref,qty,url,name,value".
-      -m MULTIPLIER, --multiplier MULTIPLIER
-                            Quantity multiplier, to be used in conjonction with
-                            --cart
+      -m MULTIPLIERS, --multipliers MULTIPLIERS
+                            Quantity multipliers, to be used in conjonction with
+                            --cart. Accepts either one global multiplier, or a
+                            comma-separated list of multipliers for each
+                            schematic.
 
     Output format:
       -o OUTPUT, --output OUTPUT
@@ -101,6 +103,10 @@ Get the footprint of every component with 100nF or 1µF value, sorted by footpri
 Create different CSV files for each supplier with quantities, ready to order to assemble 7 boards :
 
     kicad2bom kicadproject/ --cart -m 7
+
+Compile multiple schematics to make 5 copies of this multi-board project with 2 spare power boards :
+
+    kicad2bom board_power/ board_mcu/ board_antenna/ --cart -m 7,5,5
 
 ## Contributing
 

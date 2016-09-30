@@ -15,8 +15,8 @@ parser.add_argument("-a", "--all", action="store_true", dest="all",
 parser.add_argument("--cart", action="store_true", dest="cart", 
     help="Create separate CSV files for each supplier, group by supplier reference, and compute quantities for quick order. "
     "-o is ignored, -s defaults to \"ref,value\" and -f accepts the \"qty\" field and its default value is \"supplier_ref,qty,url,name,value\".")
-parser.add_argument("-m", "--multiplier", dest="multiplier", type=int, default=1, 
-    help="Quantity multiplier, to be used in conjonction with --cart")
+parser.add_argument("-m", "--multipliers", dest="multipliers", default="1",
+    help="Quantity multipliers, to be used in conjonction with --cart. Accepts either one global multiplier, or a comma-separated list of multipliers for each schematic.")
 group = parser.add_argument_group("Output format")
 group.add_argument("-o", "--output", dest="output", help="CSV output file name. If missing, result is printed to stdout.")
 group.add_argument("-H", "--no-header", action="store_true", dest="noheader", help="Do not output header")
@@ -72,22 +72,40 @@ def split(string):
 
 
 if __name__ == "__main__":
+
+    # Check the number of multipliers
+    args.multipliers = [int(x) for x in args.multipliers.split(",")]
+    if not len(args.multipliers) == 1 and not len(args.multipliers) == len(args.schematics):
+        print("Error : you can either specify one multiplier per schematic or one globally")
+        sys.exit(0)
+
     # Find the list of schematics to parse
     schematics = []
-    for schematic in args.schematics:
+    multipliers = []
+    for i in range(len(args.schematics)):
+        schematic = args.schematics[i]
+        multiplier = args.multipliers[0]
+        if len(args.multipliers) > 1:
+            multiplier = args.multipliers[i]
+
         if os.path.isfile(schematic):
             schematics.append(schematic)
+            multipliers.append(multiplier)
         elif os.path.isfile(schematic + ".sch"):
             schematics.append(schematic + ".sch")
+            multipliers.append(multiplier)
         elif os.path.isdir(schematic):
             if not schematic.endswith("/"):
                 schematic += "/"
             for e in os.listdir(schematic):
                 if e.endswith(".sch") and os.path.isfile(schematic + e):
                     schematics.append(schematic + e)
+                    multipliers.append(multiplier)
 
     # Extracts a global list of components for all the schematics
-    for schematic in schematics:
+    for i in range(len(schematics)):
+        schematic = schematics[i]
+
         # Open file
         try:
             file = open(schematic)
@@ -108,6 +126,7 @@ if __name__ == "__main__":
                 for field in fields:
                     comp[field] = ""
                 comp["schematic"] = filename
+                comp["multiplier"] = multipliers[i]
                 inCompDef = True
             elif line == "$EndComp":
                 components.append(comp.copy())
@@ -251,10 +270,11 @@ if __name__ == "__main__":
             listRefs = [c["supplier_ref"] for c in suppliers[supplier]]
             if ref not in listRefs:
                 comp2 = comp.copy()
-                comp2["qty"] = 1
+                comp2["qty"] = comp["multiplier"]
+                del comp2["multiplier"]
                 suppliers[supplier].append(comp2)
             else:
-                suppliers[supplier][listRefs.index(ref)]["qty"] += 1
+                suppliers[supplier][listRefs.index(ref)]["qty"] += comp["multiplier"]
 
         for supplier in suppliers:
             # Open output file
@@ -271,7 +291,7 @@ if __name__ == "__main__":
             for comp in suppliers[supplier]:
                 for field in outputFields:
                     if field == "qty":
-                        file.write(str(args.multiplier * comp[field]) + csvDelimiter)
+                        file.write(str(comp[field]) + csvDelimiter)
                     else:
                         file.write(textDelimiter + str(comp[field]) + textDelimiter + csvDelimiter)
                 file.write("\n")
