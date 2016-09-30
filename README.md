@@ -19,15 +19,15 @@ Simply check that python3 is installed, then copy the script somewhere in your p
 
 ## How to use
 
-For each component in your Kicad schematic, find on a supplier's website (such as Farnell, Mouser, Digikey, ...) and insert the reference in Kicad's Datasheet field. For example :
+For each component in your Kicad schematic, find on a supplier's website (such as Farnell, Mouser, Digikey, ...) and insert the URL in Kicad's Datasheet field. For example :
 
     http://fr.farnell.com/multicomp/mc0603b104k250ct/condensateur-mlcc-x7r-100nf-25v/dp/1759037
 
-Supplier name and reference will be extracted from this URL (from known suppliers, feel free to add yours).
+Supplier name and reference will be extracted from this URL (only for known suppliers, feel free to add yours).
 
 ## Manpage
 
-usage: kicad2bom.py [-h] [-u] [-a] [--cart] [-m MULTIPLIER] [-o OUTPUT] [-H]
+    usage: kicad2bom.py [-h] [-u] [-a] [--cart] [-m MULTIPLIER] [-o OUTPUT] [-H]
                         [-f FIELDS] [-s SORT] [-d {c,s,t}] [-t] [-N NAME] [-R REF]
                         [-V VALUE] [-F FOOTPRINT] [-S SUPPLIER] [-Z SUPPLIER_REF]
                         schematic [schematic ...]
@@ -107,6 +107,10 @@ Create different CSV files for each supplier with quantities, ready to order to 
 Compile multiple schematics to make 5 copies of this multi-board project with 2 spare power boards :
 
     kicad2bom board_power/ board_mcu/ board_antenna/ --cart -m 7,5,5
+
+When manually assembling the board, quickly find every component on the board with any given supplier ref, in order to place them all at once :
+
+    kicad2bom kicadproject/ - Z 1759037
 
 ## Contributing
 
