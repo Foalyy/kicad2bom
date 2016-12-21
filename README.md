@@ -111,7 +111,7 @@ Compile multiple schematics to make 5 copies of this multi-board project with 2 
 
 When manually assembling the board, quickly find every component on the board with any given supplier ref, in order to place them all at once :
 
-    kicad2bom kicadproject/ - Z 1759037
+    kicad2bom kicadproject/ -n -Z 1759037
 
 ## Contributing
 
