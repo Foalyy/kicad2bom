@@ -14,11 +14,12 @@ parser.add_argument("-a", "--all", action="store_true", dest="all",
     help="Show all components, including those with a placeholder (such as \"-\") instead of the supplier URL")
 parser.add_argument("--cart", action="store_true", dest="cart", 
     help="Create separate CSV files for each supplier, group by supplier reference, and compute quantities for quick order. "
-    "-o is ignored, -s defaults to \"ref,value\" and -f accepts the \"qty\" field and its default value is \"supplier_ref,qty,url,name,value\".")
+    "-o and -n are ignored, -s defaults to \"ref,value\" and -f accepts the \"qty\" field and its default value is \"supplier_ref,qty,url,name,value\".")
 parser.add_argument("-m", "--multipliers", dest="multipliers", default="1",
     help="Quantity multipliers, to be used in conjonction with --cart. Accepts either one global multiplier, or a comma-separated list of multipliers for each schematic.")
 group = parser.add_argument_group("Output format")
 group.add_argument("-o", "--output", dest="output", help="CSV output file name. If missing, result is printed to stdout.")
+group.add_argument("-n", "--number", action="store_true", dest="printnumber", help="Print the number of components selected")
 group.add_argument("-H", "--no-header", action="store_true", dest="noheader", help="Do not output header")
 group.add_argument("-f", "--fields", dest="fields",
     help="Comma-separated list of fields to output among 'schematic', "
@@ -258,6 +259,9 @@ if __name__ == "__main__":
                 print(s, end="")
                 print(" " * (fieldsSize[field] - len(s)), end="")
             print()
+
+        if args.printnumber:
+            print("Total : " + str(len(components)) + " components")
 
     elif args.cart:
         # Compute quantities for each component of each supplier
