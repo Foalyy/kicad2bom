@@ -38,7 +38,7 @@ Supplier name and reference will be extracted from this URL (only for known supp
       schematic             list of Kicad schematics (.sch) or project folders
 
     optional arguments:
-      -h, --help            show this help message and exit
+      -h, --help            Show this help message and exit
       -u, --unspecified     Show only components missing a supplier URL
       -a, --all             Show all components, including those with a
                             placeholder (such as "-") instead of the supplier URL
@@ -57,6 +57,7 @@ Supplier name and reference will be extracted from this URL (only for known supp
       -o OUTPUT, --output OUTPUT
                             CSV output file name. If missing, result is printed to
                             stdout.
+      -n, --number          Print the number of components selected
       -H, --no-header       Do not output header
       -f FIELDS, --fields FIELDS
                             Comma-separated list of fields to output among
